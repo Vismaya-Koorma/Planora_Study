@@ -334,6 +334,8 @@ def teacher_dashboard(request):
         description = request.POST.get('description')
         subject = request.POST.get('subject')
         task_date = request.POST.get('date')
+        end_date = request.POST.get('end_date')
+        priority = request.POST.get('priority', 'High')
         
         student_user = User.objects.get(id=student_id)
         Task.objects.create(
@@ -342,9 +344,10 @@ def teacher_dashboard(request):
             description=description,
             subject=subject,
             date=task_date,
-            start_time='09:00',
-            end_time='10:00',
-            priority='High'
+            end_date=end_date,
+            start_time='00:00',
+            end_time='00:00',
+            priority=priority
         )
         return redirect('teacher_dashboard')
         

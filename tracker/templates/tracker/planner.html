@@ -95,9 +95,16 @@
         <div class="task-content">
             <div class="task-title" style="{% if task.status == 'Completed' %}text-decoration: line-through; color: #94a3b8;{% endif %}">{{ task.description }}</div>
             <div class="task-meta">
+                {% if task.assigned_by %}
+                <span><i class="far fa-calendar-alt"></i> {{ task.date|date:"M j" }} - {{ task.end_date|date:"M j" }}</span>
+                {% else %}
                 <span><i class="far fa-clock"></i> {{ task.start_time|time:"H:i" }} - {{ task.end_time|time:"H:i" }}</span>
+                {% endif %}
                 <span><i class="fas fa-book"></i> {{ task.subject }}</span>
                 <span class="priority-badge priority-{{ task.priority }}">{{ task.priority }}</span>
+                {% if task.assigned_by %}
+                <span style="background: #e0e7ff; color: #4338ca; padding: 0.2rem 0.5rem; border-radius: 6px; font-weight: 600; font-size: 0.75rem;"><i class="fas fa-chalkboard-teacher"></i> Assigned by {{ task.assigned_by.first_name|default:task.assigned_by.username }}</span>
+                {% endif %}
             </div>
         </div>
         <form action="{% url 'toggle_task' task.id %}" method="post" style="margin:0;">

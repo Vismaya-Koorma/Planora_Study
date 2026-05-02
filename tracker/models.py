@@ -35,6 +35,7 @@ class Task(models.Model):
     subject = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
     date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
     start_time = models.TimeField()
     end_time = models.TimeField()
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='Medium')
