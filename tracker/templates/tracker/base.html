@@ -95,6 +95,16 @@
         <div class="top-bar">
             <a href="{% url 'home' %}" class="back-btn"><i class="fas fa-arrow-left"></i></a>
             <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+            <div style="margin-left: auto;">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn" style="background: white; border: none; padding: 0.5rem 1rem; border-radius: 12px; color: #ef4444; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
             {% block top_actions %}{% endblock %}
         </div>
 
