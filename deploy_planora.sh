@@ -38,7 +38,7 @@ echo "[4/8] Setting up .env file..."
 if [ ! -f "$CLONE_DIR/.env" ]; then
     echo "Creating a template .env file..."
     cat <<EOF > $CLONE_DIR/.env
-SECRET_KEY=$(python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')
+SECRET_KEY='$(python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")'
 DEBUG=False
 ALLOWED_HOSTS=$DOMAIN,127.0.0.1,localhost
 DB_NAME=studytracker_db
@@ -57,7 +57,6 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON studytracker_db.* TO 'planora_user'@'loca
 sudo mysql -e "FLUSH PRIVILEGES;"
 
 echo "[6/8] Running Django Tasks (migrations & collectstatic)..."
-source $CLONE_DIR/.env
 python manage.py migrate
 python manage.py collectstatic --noinput
 
