@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Task | പ്ലാനർ</title>
+    <title>Edit Task - Planora</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-bg: #0f172a;
-            --secondary-bg: #1e293b;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --accent-glow: rgba(59, 130, 246, 0.5);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --bg-color: #fcf4f6;
+            --text-dark: #584a69;
+            --text-muted: #9487a3;
+            --accent-blue: #7c5c96;
+            --card-bg: #ffffff;
         }
 
         * {
@@ -27,40 +23,32 @@
         }
 
         body {
-            background-color: var(--primary-bg);
-            background-image: radial-gradient(circle at top right, #1e1b4b, transparent 40%),
-                              radial-gradient(circle at bottom left, #064e3b, transparent 40%);
-            color: var(--text-main);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
-            background-attachment: fixed;
+            padding: 1.5rem;
         }
 
-        .app-container {
+        .container {
             width: 100%;
             max-width: 500px;
         }
 
-        .glass-panel {
+        .card {
             background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 24px;
             padding: 2.5rem 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .header-title {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #0f172a;
             text-align: center;
         }
 
@@ -68,7 +56,7 @@
             font-size: 1rem;
             color: var(--text-muted);
             margin-bottom: 2rem;
-            font-weight: 300;
+            font-weight: 400;
             text-align: center;
         }
 
@@ -79,7 +67,7 @@
         .app-form-group label {
             display: block;
             font-size: 0.875rem;
-            color: #cbd5e1;
+            color: var(--text-dark);
             margin-bottom: 0.5rem;
             font-weight: 500;
         }
@@ -87,30 +75,30 @@
         .app-form-control {
             width: 100%;
             padding: 0.875rem 1rem;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
-            color: white;
+            color: var(--text-dark);
             font-size: 1rem;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .app-form-control:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-glow);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .actions {
             display: flex;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
 
         .app-btn-primary {
             flex: 1;
             padding: 1rem;
-            background: linear-gradient(135deg, var(--accent), #6366f1);
+            background: var(--accent-blue);
             color: white;
             border: none;
             border-radius: 12px;
@@ -118,7 +106,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -127,14 +115,14 @@
 
         .app-btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
         }
 
         .app-btn-secondary {
             flex: 1;
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #f1f5f9;
+            color: var(--text-dark);
             text-decoration: none;
             border-radius: 12px;
             font-size: 1.1rem;
@@ -145,18 +133,19 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            border: 1px solid #e2e8f0;
         }
 
         .app-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: #e2e8f0;
             transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <div class="glass-panel">
+    <div class="container">
+        <div class="card">
             <h1 class="header-title">Edit Task</h1>
             <p class="header-subtitle">Update your study plan</p>
 

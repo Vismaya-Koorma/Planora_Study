@@ -1,0 +1,121 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Progress Tracking | Planora{% endblock %}
+{% block page_title %}Progress Tracking{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent-blue);
+        margin-bottom: 0.5rem;
+    }
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .chart-container {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Day Streak</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ completion_percentage }}%</div>
+        <div class="stat-label">Completion</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_hours }}</div>
+        <div class="stat-label">Hours Studied</div>
+    </div>
+</div>
+
+<div class="chart-container">
+    <h3 style="margin-bottom: 1.5rem;">Daily Study Hours</h3>
+    <canvas id="hoursChart" height="100"></canvas>
+</div>
+
+<div class="chart-container">
+    <h3 style="margin-bottom: 1.5rem;">Weekly Productivity</h3>
+    <canvas id="productivityChart" height="100"></canvas>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Daily Study Hours Chart
+    const ctxHours = document.getElementById('hoursChart').getContext('2d');
+    new Chart(ctxHours, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Hours Studied',
+                data: [3, 4.5, 2, 5, 4, 6, 2],
+                backgroundColor: '#3b82f6',
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true, grid: { display: false } },
+                x: { grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Weekly Productivity Chart
+    const ctxProd = document.getElementById('productivityChart').getContext('2d');
+    new Chart(ctxProd, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Productivity Score',
+                data: [65, 78, 70, 85],
+                borderColor: '#10b981',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(16, 185, 129, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true, grid: { display: false } },
+                x: { grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+</script>
+{% endblock %}

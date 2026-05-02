@@ -1,0 +1,178 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Performance Analytics | Planora{% endblock %}
+{% block page_title %}Performance{% endblock %}
+
+{% block top_actions %}
+<button class="btn-primary" style="background: white; color: var(--accent-blue); border: 1px solid var(--accent-light);">
+    <i class="fas fa-download"></i> Export PDF
+</button>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    @media (max-width: 768px) {
+        .grid-2 { grid-template-columns: 1fr; }
+    }
+    .chart-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    .chart-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #0f172a;
+    }
+    
+    .ai-insight {
+        background: linear-gradient(135deg, #fdf4ff, #e0e7ff);
+        padding: 1.5rem;
+        border-radius: 20px;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(255,255,255,0.5);
+    }
+    .ai-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        color: #6b21a8;
+        margin-bottom: 0.5rem;
+    }
+    
+    .ranking-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .ranking-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .rank-number {
+        font-weight: 700;
+        color: #cbd5e1;
+        font-size: 1.25rem;
+        width: 20px;
+    }
+    .rank-bar-bg {
+        flex: 1;
+        height: 8px;
+        background: #f1f5f9;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .rank-bar-fill {
+        height: 100%;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="ai-insight">
+    <div class="ai-header"><i class="fas fa-robot"></i> AI Study Insight</div>
+    {% if has_data %}
+    <p style="color: #4c1d95; font-size: 0.95rem;">Great work! Your top focus this week is <strong>{{ top_subject }}</strong>. Make sure you're distributing your time effectively across all your subjects to maintain a balanced academic performance.</p>
+    {% else %}
+    <p style="color: #4c1d95; font-size: 0.95rem;">You haven't completed any tasks yet! Start tracking your study sessions in the Daily Planner to see your AI insights here.</p>
+    {% endif %}
+</div>
+
+<div class="grid-2">
+    <div class="chart-card">
+        <div class="chart-title">Time Distribution (Hours)</div>
+        {% if has_data %}
+        <canvas id="pieChart" height="200"></canvas>
+        {% else %}
+        <p style="color: var(--text-muted); text-align: center; padding: 2rem 0;">No data available</p>
+        {% endif %}
+    </div>
+    
+    <div class="chart-card">
+        <div class="chart-title">Subject Ranking</div>
+        <div class="ranking-list">
+            {% for rank in rankings %}
+            <div class="ranking-item">
+                <div class="rank-number">{{ forloop.counter }}</div>
+                <div style="width: 80px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ rank.name }}">{{ rank.name }}</div>
+                <div class="rank-bar-bg"><div class="rank-bar-fill" style="width: {{ rank.relative_percentage }}%; background: {{ rank.color }};"></div></div>
+                <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-muted);">{{ rank.hours }}h</div>
+            </div>
+            {% empty %}
+            <p style="color: var(--text-muted); text-align: center; padding: 2rem 0;">No subjects tracked</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="chart-card">
+    <div class="chart-title">Monthly Focus Trend</div>
+    <canvas id="trendChart" height="100"></canvas>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    {% if has_data %}
+    // Time Distribution Pie Chart
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'doughnut',
+        data: {
+            labels: {{ labels_json|safe }},
+            datasets: [{
+                data: {{ data_json|safe }},
+                backgroundColor: {{ colors_json|safe }},
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'right' }
+            },
+            cutout: '70%'
+        }
+    });
+    {% endif %}
+
+    // Monthly Focus Trend
+    const ctxTrend = document.getElementById('trendChart').getContext('2d');
+    new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Focus Score (Hours)',
+                data: {{ trend_json|safe }},
+                borderColor: '#8b5cf6',
+                borderWidth: 3,
+                tension: 0.4,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#8b5cf6',
+                pointBorderWidth: 2,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true, grid: { display: false } },
+                x: { grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+</script>
+{% endblock %}

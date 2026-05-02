@@ -1,0 +1,151 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Timetable | Planora{% endblock %}
+{% block page_title %}Weekly Timetable{% endblock %}
+
+{% block top_actions %}
+<button class="btn-primary" onclick="document.getElementById('addTimetableModal').style.display='flex'">
+    <i class="fas fa-plus"></i> Add Class
+</button>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timetable-grid {
+        display: grid;
+        grid-template-columns: 80px repeat(7, 1fr);
+        gap: 1px;
+        background: #e2e8f0;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    .timetable-cell {
+        background: white;
+        padding: 1rem 0.5rem;
+        text-align: center;
+        font-size: 0.85rem;
+        position: relative;
+    }
+    .timetable-header {
+        font-weight: 600;
+        background: #f8fafc;
+        color: var(--text-dark);
+    }
+    .time-label {
+        font-weight: 500;
+        color: var(--text-muted);
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .class-block {
+        background: var(--accent-light);
+        color: var(--accent-blue);
+        border-radius: 8px;
+        padding: 0.5rem;
+        margin: 0.25rem;
+        font-weight: 600;
+        font-size: 0.75rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border-left: 3px solid var(--accent-blue);
+    }
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+        .timetable-grid {
+            grid-template-columns: 60px repeat(7, minmax(100px, 1fr));
+            overflow-x: auto;
+        }
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 24px;
+        width: 90%; max-width: 500px;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; }
+    .form-control { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="overflow-x: auto; padding-bottom: 1rem;">
+    <div class="timetable-grid" style="min-width: 800px;">
+        <!-- Headers -->
+        <div class="timetable-cell timetable-header">Time</div>
+        <div class="timetable-cell timetable-header">Mon</div>
+        <div class="timetable-cell timetable-header">Tue</div>
+        <div class="timetable-cell timetable-header">Wed</div>
+        <div class="timetable-cell timetable-header">Thu</div>
+        <div class="timetable-cell timetable-header">Fri</div>
+        <div class="timetable-cell timetable-header">Sat</div>
+        <div class="timetable-cell timetable-header">Sun</div>
+
+        <!-- Dynamic Rows -->
+        {% for row in grid %}
+        <div class="timetable-cell time-label">{{ row.time }}</div>
+        {% for classes in row.days %}
+        <div class="timetable-cell">
+            {% for c in classes %}
+            <div class="class-block">
+                {{ c.subject }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Add Timetable Modal -->
+<div class="modal" id="addTimetableModal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+            <h2>Add Class/Session</h2>
+            <button onclick="document.getElementById('addTimetableModal').style.display='none'" style="background:none; border:none; font-size: 1.25rem; cursor:pointer;"><i class="fas fa-times"></i></button>
+        </div>
+        <form action="#" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Subject</label>
+                <input type="text" name="subject" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Day</label>
+                <select name="day" class="form-control">
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                    <option>Sunday</option>
+                </select>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label>Start Time</label>
+                    <input type="time" name="start_time" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>End Time</label>
+                    <input type="time" name="end_time" class="form-control" required>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Add to Timetable</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

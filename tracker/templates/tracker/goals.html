@@ -1,0 +1,170 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Goal Management | Planora{% endblock %}
+{% block page_title %}Goals{% endblock %}
+
+{% block top_actions %}
+<button class="btn-primary" onclick="document.getElementById('addGoalModal').style.display='flex'">
+    <i class="fas fa-plus"></i> Add Goal
+</button>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .goal-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    .goal-card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        position: relative;
+        overflow: hidden;
+    }
+    .goal-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    .goal-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #0f172a;
+    }
+    .goal-type {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 10px;
+        background: #f1f5f9;
+        color: #64748b;
+        font-weight: 500;
+    }
+    .goal-progress-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    .progress-bar-bg {
+        flex: 1;
+        height: 8px;
+        background: #f1f5f9;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .progress-bar-fill {
+        height: 100%;
+        background: var(--accent-blue);
+        border-radius: 4px;
+        transition: width 1s ease-in-out;
+    }
+    .progress-text {
+        font-weight: 700;
+        color: var(--accent-blue);
+    }
+    
+    /* Celebration animation */
+    @keyframes pop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    .goal-card.completed {
+        border: 2px solid #10b981;
+        animation: pop 0.5s ease-out;
+    }
+    .goal-card.completed .progress-bar-fill {
+        background: #10b981;
+    }
+    .goal-card.completed .progress-text {
+        color: #10b981;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 24px;
+        width: 90%; max-width: 500px;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; }
+    .form-control { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="goal-list">
+    {% for goal in goals %}
+    <div class="goal-card {% if goal.completed or goal.progress >= 100 %}completed{% endif %}">
+        <div class="goal-header">
+            <div class="goal-title">{{ goal.title }}</div>
+            <div class="goal-type">{{ goal.goal_type }}</div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Deadline: {{ goal.deadline|date:"M d, Y" }}</p>
+        
+        <div class="goal-progress-container">
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: {{ goal.progress }}%"></div>
+            </div>
+            <div class="progress-text">{{ goal.progress }}%</div>
+        </div>
+        
+        <form action="{% url 'update_goal' goal.id %}" method="post" style="margin-top: 1rem; display: flex; gap: 0.5rem; align-items: center;">
+            {% csrf_token %}
+            <input type="number" name="progress" min="0" max="100" value="{{ goal.progress }}" class="form-control" style="padding: 0.4rem; font-size: 0.85rem; border-radius: 6px;" required>
+            <button type="submit" class="btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: 6px;">Update</button>
+        </form>
+    </div>
+    {% empty %}
+    <div style="text-align: center; color: var(--text-muted); grid-column: 1/-1; padding: 2rem;">
+        <p>No goals set yet. Aim high!</p>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Add Goal Modal -->
+<div class="modal" id="addGoalModal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+            <h2>Add New Goal</h2>
+            <button onclick="document.getElementById('addGoalModal').style.display='none'" style="background:none; border:none; font-size: 1.25rem; cursor:pointer;"><i class="fas fa-times"></i></button>
+        </div>
+        <form action="#" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select name="goal_type" class="form-control">
+                    <option value="Short-term">Short-term</option>
+                    <option value="Long-term">Long-term</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Deadline</label>
+                <input type="date" name="deadline" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Current Progress (%)</label>
+                <input type="number" name="progress" class="form-control" min="0" max="100" value="0">
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Save Goal</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

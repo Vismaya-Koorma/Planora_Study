@@ -3,468 +3,373 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Planner & Tracker </title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Planora Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-bg: #0f172a;
-            --secondary-bg: #1e293b;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --accent-glow: rgba(59, 130, 246, 0.5);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --completed-bg: rgba(16, 185, 129, 0.1);
-            --completed-border: #10b981;
+            --bg-color: #d1bfae; /* Cardboard back */
+            --text-dark: #3a2a18; /* Dark brown ink */
+            --text-muted: #735f4d; /* Faded ink */
+            --accent-blue: #9c3f3f; /* Vintage red stamp */
+            --card-bg: #f4e8d8; /* Main paper */
+            --accent-light: #e0d0c0;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Courier Prime', 'Courier New', Courier, monospace;
         }
 
         body {
-            background-color: var(--primary-bg);
-            background-image: radial-gradient(circle at top right, #1e1b4b, transparent 40%),
-                              radial-gradient(circle at bottom left, #064e3b, transparent 40%);
-            color: var(--text-main);
+            background-color: var(--bg-color);
+            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02)), repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 25%, var(--bg-color) 25%, var(--bg-color) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02));
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+            color: var(--text-dark);
             min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2.5rem 2rem;
+            background-color: var(--card-bg);
+            border: 2px dashed #b8a694;
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.15), inset 0 0 40px rgba(139,115,85,0.1);
+            position: relative;
+        }
+        
+        /* The paperclip effect */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            width: 25px;
+            height: 60px;
+            border: 3px solid #6b7280;
+            border-radius: 12px;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 85%);
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+            z-index: 110;
+            background: transparent;
+        }
+
+        /* Top Bar */
+        .top-bar {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            padding: 2rem;
-            background-attachment: fixed;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 900px;
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .app-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .glass-panel {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .header-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-subtitle {
-            font-size: 1rem;
-            color: var(--text-muted);
             margin-bottom: 2rem;
-            font-weight: 300;
+            position: sticky;
+            top: 0;
+            background-color: var(--card-bg); /* Match inner paper */
+            z-index: 100;
+            margin: -2.5rem -2rem 2rem -2rem;
+            padding: 2rem 2rem 1.5rem 2rem;
+            border-bottom: 1px dashed #d4c4b4;
         }
 
-        .app-form-group {
-            margin-bottom: 1.25rem;
+        .profile-pic {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            overflow: hidden;
+        }
+        
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .app-form-group label {
-            display: block;
-            font-size: 0.875rem;
-            color: #cbd5e1;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-transform: capitalize;
+            text-decoration: none;
         }
 
-        .app-form-group label span {
+        .actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .icon-btn {
             color: var(--text-muted);
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-            font-weight: 300;
-        }
-
-        .app-form-control {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .app-form-control:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-glow);
-        }
-
-        .app-form-control::placeholder {
-            color: #64748b;
-        }
-
-        .app-btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--accent), #6366f1);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.25rem;
             cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+        }
+        
+        .icon-btn:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Greeting */
+        .greeting {
+            margin-bottom: 2.5rem;
+        }
+
+        .greeting h1 {
+            font-size: 3.5rem;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #2b1f14;
+            transform: rotate(-2deg);
+        }
+
+        .greeting p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .module-card {
+            background: #faf3ea;
+            border: 1px solid #d4c4b4;
+            border-radius: 4px; /* Less rounded for vintage feel */
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
             transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
-            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
+        }
+
+        .module-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            font-size: 1.75rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
-        .app-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+        /* Colors for different modules */
+        .mod-planner .module-icon { background: #eff6ff; color: #3b82f6; }
+        .mod-analytics .module-icon { background: #fdf4ff; color: #d946ef; }
+        .mod-goals .module-icon { background: #ecfdf5; color: #10b981; }
+        .mod-timetable .module-icon { background: #fffbeb; color: #f59e0b; }
+        .mod-reminders .module-icon { background: #fef2f2; color: #ef4444; }
+        .mod-performance .module-icon { background: #f3e8ff; color: #8b5cf6; }
+
+        .module-content h3 {
+            font-size: 1.2rem;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-size: 1.8rem;
         }
 
-        .task-list-header {
+        .module-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Section Header */
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
 
-        .task-list-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            color: #2b1f14;
         }
 
-        .tasks-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            max-height: 600px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-        }
-
-        /* Custom Scrollbar */
-        .tasks-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .tasks-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
-        }
-        .tasks-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        .tasks-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .quick-tasks {
+            background: #faf3ea;
+            border: 1px solid #d4c4b4;
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         }
 
         .task-item {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 1.25rem;
             display: flex;
             align-items: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px dashed #d4c4b4;
         }
-
-        .task-item:hover {
-            background: rgba(30, 41, 59, 0.8);
-            transform: scale(1.02);
+        .task-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
         }
-
-        .task-item.completed {
-            background: var(--completed-bg);
-            border-color: rgba(16, 185, 129, 0.3);
-            opacity: 0.8;
-        }
-
-        .task-item.completed .task-title {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        .task-checkbox-wrapper {
-            margin-right: 1.25rem;
-        }
-
-        .task-checkbox {
-            appearance: none;
-            width: 28px;
-            height: 28px;
-            border: 2px solid #475569;
-            border-radius: 50%;
-            background: transparent;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .task-checkbox:checked {
-            background: #10b981;
-            border-color: #10b981;
-        }
-
-        .task-checkbox:checked::after {
-            content: '\f00c';
-            font-family: 'Font Awesome 5 Free', 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: white;
-            font-size: 14px;
-        }
-
-        .task-checkbox:hover {
-            border-color: var(--accent);
-        }
-
-        .task-content {
+        .task-title {
+            font-weight: 500;
             flex: 1;
         }
-
-        .task-title {
-            font-size: 1.125rem;
+        .task-status {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #64748b;
             font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: #f1f5f9;
-            transition: all 0.3s ease;
+        }
+        .task-status.completed {
+            background: #d4c4b4;
+            color: #3a2a18;
+            border: 1px dashed #3a2a18;
         }
 
-        .task-meta {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .task-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .task-actions {
-            margin-left: 1rem;
-        }
-
-        .btn-icon {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-icon:hover {
-            background: #ef4444;
-            color: white;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-muted);
-        }
-
-        .empty-icon {
-            font-size: 3rem;
-            color: #475569;
-            margin-bottom: 1rem;
-        }
-
-        /* Toggle Button Trick */
-        .toggle-form {
-            display: inline;
-        }
-
-        /* --- New UI Polish & Highlights --- */
-        
-        /* Deadline highlights */
-        .border-past { border-left: 4px solid #ef4444 !important; }
-        .border-today { border-left: 4px solid #eab308 !important; }
-        .border-future { border-left: 4px solid #10b981 !important; }
-
-        /* Button click feedback */
-        .app-btn-primary:active {
-            transform: scale(0.95);
-        }
-        .btn-icon:active {
-            transform: scale(0.85);
-        }
-        
-        /* Smooth animation for progress bar */
-        .progress-fill {
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="container">
         
-        <!-- Add Task Form -->
-        <div class="glass-panel">
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div>
-                    <h1 class="header-title">Study Tracker</h1>
-                    <p class="header-subtitle">Plan your day, track your progress. 🚀</p>
-                </div>
-                <!-- Logout Button -->
-                <form action="{% url 'logout' %}" method="post">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <a href="{% url 'home' %}" class="logo">Planora</a>
+            <div class="actions">
+                <a href="{% url 'reminders' %}" class="icon-btn"><i class="far fa-bell"></i></a>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="btn-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: auto; height: auto; text-decoration: none;" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                    <button type="submit" class="icon-btn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
                     </button>
                     <input type="hidden" name="next" value="{% url 'login' %}">
                 </form>
+                <div class="profile-pic">
+                    <img src="https://ui-avatars.com/api/?name={{ request.user.username }}&background=2563eb&color=fff" alt="Profile">
+                </div>
             </div>
-
-            <form action="{% url 'add_task' %}" method="POST">
-                {% csrf_token %}
-                <div class="app-form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" class="app-form-control" placeholder="e.g. Read Physics chapter 2" required>
-                </div>
-                
-                <div class="app-form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" class="app-form-control" placeholder="e.g. Physics" required>
-                </div>
-
-                <div class="app-form-group">
-                    <label for="study_date">Date</label>
-                    <input type="date" id="study_date" name="study_date" class="app-form-control" required>
-                </div>
-
-                <div class="app-form-group">
-                    <label for="duration">Duration (mins)</label>
-                    <input type="number" id="duration" name="duration" class="app-form-control" placeholder="e.g. 60" min="1" required>
-                </div>
-
-                <button type="submit" class="app-btn-primary">
-                    <i class="fas fa-plus"></i> Add to Plan
-                </button>
-            </form>
         </div>
 
-        <!-- Task List -->
-        <div class="glass-panel">
-            <div class="task-list-header">
-                <h2>Your Plan</h2>
-                <div style="text-align: right; width: 150px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                        <span style="font-size: 0.9rem; font-weight: 600; color: #f8fafc;">Progress: <span style="color: var(--accent);">{{ progress_percentage }}%</span></span>
-                    </div>
-                    <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; margin-bottom: 5px;">
-                        <div class="progress-fill" style="width: {{ progress_percentage }}%; height: 100%; background: linear-gradient(90deg, #3b82f6, #10b981);"></div>
-                    </div>
+        <!-- Greeting -->
+        <div class="greeting">
+            <h1>Hello, {{ request.user.first_name|default:request.user.username|title }}.</h1>
+            <p>Welcome to your productivity hub</p>
+        </div>
+
+        <!-- 6 Main Modules Grid -->
+        <div class="modules-grid">
+            <a href="{% url 'planner' %}" class="module-card mod-planner">
+                <div class="module-icon"><i class="fas fa-list-check"></i></div>
+                <div class="module-content">
+                    <h3>Daily Planner</h3>
+                    <p>Manage daily tasks & schedule</p>
                 </div>
-            </div>
+            </a>
 
-            <div class="tasks-container">
-                {% if plans %}
-                    {% for plan in plans %}
-                    <div class="task-item {% if plan.completed %}completed{% endif %} {% if plan.study_date < today %}border-past{% elif plan.study_date == today %}border-today{% else %}border-future{% endif %}">
-                        
-                        <!-- Toggle Form -->
-                        <form action="{% url 'toggle_task' plan.id %}" method="POST" class="toggle-form" id="toggle-form-{{ plan.id }}">
-                            {% csrf_token %}
-                            <div class="task-checkbox-wrapper">
-                                <input type="checkbox" class="task-checkbox" 
-                                       {% if plan.completed %}checked{% endif %}
-                                       onchange="document.getElementById('toggle-form-{{ plan.id }}').submit();">
-                            </div>
-                        </form>
+            <a href="{% url 'analytics' %}" class="module-card mod-analytics">
+                <div class="module-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="module-content">
+                    <h3>Progress Tracking</h3>
+                    <p>Daily study hours & streaks</p>
+                </div>
+            </a>
 
-                        <div class="task-content">
-                            <div class="task-title">{{ plan.title }}</div>
-                            <div class="task-meta">
-                                <span><i class="fas fa-book"></i> {{ plan.subject }}</span>
-                                <span><i class="far fa-calendar-alt"></i> {{ plan.study_date|date:"M d, Y" }}</span>
-                                <span><i class="far fa-clock"></i> {{ plan.duration }} mins</span>
-                            </div>
-                        </div>
+            <a href="{% url 'goals' %}" class="module-card mod-goals">
+                <div class="module-icon"><i class="fas fa-bullseye"></i></div>
+                <div class="module-content">
+                    <h3>Goal Management</h3>
+                    <p>Track short & long-term targets</p>
+                </div>
+            </a>
 
-                        <div class="task-actions" style="display: flex; gap: 0.5rem;">
-                            <!-- Edit Button -->
-                            <a href="{% url 'edit_task' plan.id %}" class="btn-icon" style="background: rgba(59, 130, 246, 0.1); color: var(--accent); text-decoration: none;" title="Edit">
-                                <i class="fas fa-pen"></i>
-                            </a>
-                            <!-- Delete Button -->
-                            <form action="{% url 'delete_task' plan.id %}" method="POST" class="toggle-form" onsubmit="return confirm('Are you sure?');">
+            <a href="{% url 'timetable' %}" class="module-card mod-timetable">
+                <div class="module-icon"><i class="far fa-calendar-alt"></i></div>
+                <div class="module-content">
+                    <h3>Timetable</h3>
+                    <p>Weekly study grid & classes</p>
+                </div>
+            </a>
+
+            <a href="{% url 'reminders' %}" class="module-card mod-reminders">
+                <div class="module-icon"><i class="fas fa-bell"></i></div>
+                <div class="module-content">
+                    <h3>Smart Reminders</h3>
+                    <p>Push alerts & overdue tasks</p>
+                </div>
+            </a>
+
+            <a href="{% url 'performance' %}" class="module-card mod-performance">
+                <div class="module-icon"><i class="fas fa-chart-pie"></i></div>
+                <div class="module-content">
+                    <h3>Performance</h3>
+                    <p>AI insights & subject ranking</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Scheduled Tasks -->
+        <div class="section-header">
+            <h2>Scheduled Tasks</h2>
+        </div>
+        <div>
+            {% if tasks %}
+                {% regroup tasks by date as date_list %}
+                {% for group in date_list %}
+                    <div style="font-weight: 600; color: var(--accent-blue); margin: 1.5rem 0 0.5rem 0.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="far fa-calendar-check"></i> {{ group.grouper|date:"F j, Y" }}
+                    </div>
+                    <div class="quick-tasks" style="padding: 0 1.5rem;">
+                        {% for task in group.list %}
+                        <div class="task-item">
+                            <form action="{% url 'toggle_task' task.id %}" method="post" style="margin: 0;">
                                 {% csrf_token %}
-                                <button type="submit" class="btn-icon" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
+                                <button type="submit" style="background:none; border:none; cursor:pointer; font-size: 1.25rem; color: {% if task.status == 'Completed' %}#10b981{% else %}#cbd5e1{% endif %};">
+                                    <i class="{% if task.status == 'Completed' %}fas fa-check-circle{% else %}far fa-circle{% endif %}"></i>
                                 </button>
                             </form>
+                            <div class="task-title" style="{% if task.status == 'Completed' %}text-decoration: line-through; color: #94a3b8;{% endif %}">
+                                <div>{{ task.description }}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;"><i class="far fa-clock"></i> {{ task.start_time|time:"H:i" }} - {{ task.end_time|time:"H:i" }}</div>
+                            </div>
+                            <div class="task-status {% if task.status == 'Completed' %}completed{% endif %}">{{ task.status }}</div>
+                            <div style="display: flex; gap: 0.75rem; margin-left: 1rem;">
+                                <a href="{% url 'edit_task' task.id %}" style="color: var(--text-muted); text-decoration: none; font-size: 1.1rem;"><i class="fas fa-edit"></i></a>
+                                <a href="{% url 'delete_task' task.id %}" style="color: #ef4444; text-decoration: none; font-size: 1.1rem;"><i class="fas fa-trash-alt"></i></a>
+                            </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="empty-state">
-                        <div class="empty-icon" style="font-size: 4rem; color: #64748b; margin-bottom: 1.5rem; animation: float 3s ease-in-out infinite;">
-                            <i class="fas fa-clipboard-check"></i>
-                        </div>
-                        <h3 style="font-size: 1.5rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem;">No tasks yet 🚀</h3>
-                        <p style="font-size: 1.1rem; color: #94a3b8;">Start planning!</p>
-                    </div>
-                    <style>
-                        @keyframes float {
-                            0% { transform: translateY(0px); }
-                            50% { transform: translateY(-10px); }
-                            100% { transform: translateY(0px); }
-                        }
-                    </style>
-                {% endif %}
-            </div>
+                {% endfor %}
+            {% else %}
+                <div class="quick-tasks">
+                    <p style="color: var(--text-muted); text-align: center; padding: 1rem 0;">No tasks scheduled.</p>
+                </div>
+            {% endif %}
         </div>
 
     </div>
 
-    <!-- For setting default date to today -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var dateInput = document.getElementById('study_date');
-            if(!dateInput.value) {
-                var today = new Date().toISOString().split('T')[0];
-                dateInput.value = today;
-            }
-        });
-    </script>
 </body>
 </html>

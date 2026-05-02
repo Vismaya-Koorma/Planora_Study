@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Planora{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #fcf4f6;
+            --text-dark: #584a69;
+            --text-muted: #9487a3;
+            --accent-blue: #7c5c96;
+            --card-bg: #ffffff;
+            --accent-light: #f3e8ff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-color);
+            z-index: 100;
+            margin: -1.5rem -1.5rem 2rem -1.5rem;
+            padding: 1.5rem 1.5rem 1rem 1.5rem;
+        }
+        .back-btn {
+            color: var(--text-dark);
+            font-size: 1.25rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px; height: 40px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            transform: scale(1.05);
+            color: var(--accent-blue);
+        }
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <a href="{% url 'home' %}" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+            {% block top_actions %}{% endblock %}
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div style="padding: 1rem; margin-bottom: 1.5rem; border-radius: 12px; font-weight: 500; {% if message.tags == 'error' %}background: #fee2e2; color: #ef4444;{% else %}background: #dcfce7; color: #166534;{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
