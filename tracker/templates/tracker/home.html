@@ -8,55 +8,51 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #d1bfae; /* Cardboard back */
-            --text-dark: #3a2a18; /* Dark brown ink */
-            --text-muted: #735f4d; /* Faded ink */
-            --accent-blue: #9c3f3f; /* Vintage red stamp */
-            --card-bg: #f4e8d8; /* Main paper */
-            --accent-light: #e0d0c0;
+            --bg-color: #fdf2f5;
+            --text-dark: #584a69;
+            --text-muted: #9487a3;
+            --accent-purple: #b8a8d8;
+            --accent-pink: #f7d7d2;
+            --card-bg: #ffffff;
+            --accent-light: #f3e8ff;
+            --accent-peach: #fce8e4;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier Prime', 'Courier New', Courier, monospace;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
-            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02)), repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 25%, var(--bg-color) 25%, var(--bg-color) 75%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02));
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
+            background-image: radial-gradient(var(--accent-pink) 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
             color: var(--text-dark);
             min-height: 100vh;
             padding-bottom: 80px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 2rem auto;
             padding: 2.5rem 2rem;
-            background-color: var(--card-bg);
-            border: 2px dashed #b8a694;
-            box-shadow: 2px 5px 15px rgba(0,0,0,0.15), inset 0 0 40px rgba(139,115,85,0.1);
+            background-color: #fffafb;
+            border-radius: 40px;
+            border: 4px solid var(--accent-light);
+            box-shadow: 0 15px 40px rgba(88, 74, 105, 0.1);
             position: relative;
         }
         
-        /* The paperclip effect */
-        .container::before {
-            content: '';
+        /* Decorative dots and stars */
+        .container::after {
+            content: '✨';
             position: absolute;
-            top: -20px;
-            left: 30px;
-            width: 25px;
-            height: 60px;
-            border: 3px solid #6b7280;
-            border-radius: 12px;
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 85%);
-            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
-            z-index: 110;
-            background: transparent;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            opacity: 0.5;
         }
 
         /* Top Bar */
@@ -67,19 +63,22 @@
             margin-bottom: 2rem;
             position: sticky;
             top: 0;
-            background-color: var(--card-bg); /* Match inner paper */
+            background-color: #fffafb;
             z-index: 100;
             margin: -2.5rem -2rem 2rem -2rem;
             padding: 2rem 2rem 1.5rem 2rem;
-            border-bottom: 1px dashed #d4c4b4;
+            border-bottom: 2px dashed var(--accent-pink);
+            border-radius: 40px 40px 0 0;
         }
 
         .profile-pic {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background-color: #cbd5e1;
+            background-color: var(--accent-light);
             overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
         
         .profile-pic img {
@@ -89,11 +88,15 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 2.5rem;
+            font-family: 'Caveat', cursive;
             font-weight: 700;
-            color: var(--accent-blue);
-            text-transform: capitalize;
+            color: var(--accent-purple);
             text-decoration: none;
+            transition: all 0.3s;
+        }
+        .logo:hover {
+            transform: scale(1.05) rotate(-2deg);
         }
 
         .actions {
@@ -104,34 +107,58 @@
 
         .icon-btn {
             color: var(--text-muted);
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            background: none;
+            background: white;
             border: none;
-            transition: color 0.2s;
+            width: 45px;
+            height: 45px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
         }
         
         .icon-btn:hover {
-            color: var(--accent-blue);
+            color: var(--accent-purple);
+            transform: translateY(-2px);
+            background: var(--accent-light);
         }
 
         /* Greeting */
         .greeting {
             margin-bottom: 2.5rem;
+            text-align: center;
         }
 
         .greeting h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-family: 'Caveat', cursive;
             font-weight: 700;
             margin-bottom: 0.25rem;
-            color: #2b1f14;
-            transform: rotate(-2deg);
+            color: var(--text-dark);
+            position: relative;
+            display: inline-block;
+        }
+        .greeting h1::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--accent-pink);
+            z-index: -1;
+            opacity: 0.6;
+            border-radius: 10px;
         }
 
         .greeting p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-style: italic;
         }
 
         /* Modules Grid */
@@ -143,57 +170,57 @@
         }
 
         .module-card {
-            background: #faf3ea;
-            border: 1px solid #d4c4b4;
-            border-radius: 4px; /* Less rounded for vintage feel */
+            background: white;
+            border: 2px solid var(--accent-light);
+            border-radius: 25px;
             padding: 1.5rem;
             text-decoration: none;
             color: var(--text-dark);
             display: flex;
             align-items: center;
             gap: 1.25rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(88, 74, 105, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
         }
 
         .module-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
+            transform: translateY(-8px) rotate(1deg);
+            border-color: var(--accent-purple);
+            box-shadow: 0 15px 30px rgba(184, 168, 216, 0.2);
         }
 
         .module-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 4px;
+            width: 65px;
+            height: 65px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.75rem;
+            font-size: 1.8rem;
             flex-shrink: 0;
-            border: 1px solid rgba(0,0,0,0.1);
+            transition: all 0.3s;
         }
 
-        /* Colors for different modules */
-        .mod-planner .module-icon { background: #eff6ff; color: #3b82f6; }
-        .mod-analytics .module-icon { background: #fdf4ff; color: #d946ef; }
-        .mod-goals .module-icon { background: #ecfdf5; color: #10b981; }
-        .mod-timetable .module-icon { background: #fffbeb; color: #f59e0b; }
-        .mod-reminders .module-icon { background: #fef2f2; color: #ef4444; }
-        .mod-performance .module-icon { background: #f3e8ff; color: #8b5cf6; }
+        .mod-planner .module-icon { background: #fef2f2; color: #f87171; }
+        .mod-analytics .module-icon { background: #fdf4ff; color: #e879f9; }
+        .mod-goals .module-icon { background: #f0fdf4; color: #4ade80; }
+        .mod-timetable .module-icon { background: #fffbeb; color: #fbbf24; }
+        .mod-reminders .module-icon { background: #eff6ff; color: #60a5fa; }
+        .mod-performance .module-icon { background: #f5f3ff; color: #a78bfa; }
 
         .module-content h3 {
-            font-size: 1.2rem;
+            font-size: 1.8rem;
             font-family: 'Caveat', cursive;
             font-weight: 700;
-            margin-bottom: 0.25rem;
-            font-size: 1.8rem;
+            margin-bottom: 0.1rem;
         }
 
         .module-content p {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
+            line-height: 1.2;
         }
 
         /* Section Header */
@@ -205,47 +232,51 @@
         }
 
         .section-header h2 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-family: 'Caveat', cursive;
             font-weight: 700;
-            color: #2b1f14;
+            color: var(--text-dark);
+            margin-left: 0.5rem;
         }
 
         .quick-tasks {
-            background: #faf3ea;
-            border: 1px solid #d4c4b4;
-            border-radius: 4px;
+            background: white;
+            border: 2px solid var(--accent-peach);
+            border-radius: 25px;
             padding: 1.5rem;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
         }
 
         .task-item {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px dashed #d4c4b4;
+            padding: 1.2rem 0;
+            border-bottom: 2px dotted var(--accent-peach);
         }
         .task-item:last-child {
             border-bottom: none;
             padding-bottom: 0;
         }
         .task-title {
-            font-weight: 500;
+            font-weight: 600;
             flex: 1;
+            font-size: 1.1rem;
         }
         .task-status {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+            padding: 0.3rem 1rem;
             border-radius: 20px;
-            background: #f1f5f9;
-            color: #64748b;
-            font-weight: 600;
+            background: var(--accent-light);
+            color: var(--text-dark);
+            font-weight: 700;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
         }
         .task-status.completed {
-            background: #d4c4b4;
-            color: #3a2a18;
-            border: 1px dashed #3a2a18;
+            background: var(--accent-peach);
+            color: #d87d6e;
+            text-decoration: line-through;
         }
 
     </style>

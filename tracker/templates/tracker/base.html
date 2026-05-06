@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Planora{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-color: #fcf4f6;
+            --bg-color: #fdf2f5;
             --text-dark: #584a69;
             --text-muted: #9487a3;
-            --accent-blue: #7c5c96;
+            --accent-purple: #b8a8d8;
+            --accent-pink: #f7d7d2;
             --card-bg: #ffffff;
             --accent-light: #f3e8ff;
+            --accent-peach: #fce8e4;
         }
         * {
             margin: 0;
@@ -24,9 +26,14 @@
         }
         body {
             background-color: var(--bg-color);
+            background-image: radial-gradient(#f7d7d2 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
             color: var(--text-dark);
             min-height: 100vh;
             padding-bottom: 80px;
+        }
+        h1, h2, h3, .script-font {
+            font-family: 'Caveat', cursive;
         }
         .container {
             max-width: 800px;
@@ -44,6 +51,7 @@
             z-index: 100;
             margin: -1.5rem -1.5rem 2rem -1.5rem;
             padding: 1.5rem 1.5rem 1rem 1.5rem;
+            border-bottom: 2px dashed var(--accent-pink);
         }
         .back-btn {
             color: var(--text-dark);
@@ -55,37 +63,66 @@
             width: 40px; height: 40px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 2px solid var(--accent-light);
         }
         .back-btn:hover {
-            transform: scale(1.05);
-            color: var(--accent-blue);
+            transform: scale(1.1) rotate(-5deg);
+            background: var(--accent-light);
         }
         .page-title {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
         }
         .card {
             background: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 8px 20px rgba(88, 74, 105, 0.05);
             margin-bottom: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: var(--accent-pink);
+            transform: translateY(-2px);
         }
         .btn-primary {
-            background: var(--accent-blue);
+            background: var(--accent-purple);
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: 12px;
+            border-radius: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 10px rgba(184, 168, 216, 0.3);
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 15px rgba(184, 168, 216, 0.4);
+            background: #a898c8;
+        }
+        .logout-btn {
+            background: white !important;
+            border: 2px solid #fee2e2 !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 12px !important;
+            color: #ef4444 !important;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: #fee2e2 !important;
+            transform: scale(1.05);
         }
     </style>
     {% block extra_css %}{% endblock %}
