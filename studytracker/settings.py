@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-iqzotqvo&--49+g45w@--xnue=gz^ncis$+j2+&s$pxty*alt0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost,http://127.0.0.1').split(',')
@@ -83,9 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DB_NAME', 'studytracker_db'),
-        'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'ajce'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'USER': os.getenv('DB_USER', 'planora_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'SecurePassword123!'),
+        'HOST': '127.0.0.1',
         'PORT': os.getenv('DB_PORT', '3306'),
     }
 }
