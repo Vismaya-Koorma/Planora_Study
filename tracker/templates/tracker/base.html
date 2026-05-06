@@ -36,9 +36,11 @@
             font-family: 'Caveat', cursive;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
+            width: 95%;
             margin: 0 auto;
-            padding: 1.5rem;
+            padding: 2rem;
+            position: relative;
         }
         .top-bar {
             display: flex;
@@ -136,7 +138,7 @@
                 {% if user.is_authenticated %}
                     <form action="{% url 'logout' %}" method="post" style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" class="logout-btn" style="background: white; border: none; padding: 0.5rem 1rem; border-radius: 12px; color: #ef4444; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s;">
+                        <button type="submit" class="logout-btn">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </button>
                     </form>
@@ -144,6 +146,12 @@
             </div>
             {% block top_actions %}{% endblock %}
         </div>
+
+        <!-- Decorative Elements -->
+        <div style="position: fixed; bottom: 20px; left: 20px; font-size: 3rem; opacity: 0.15; z-index: -1; transform: rotate(-15deg);">📚🕯️</div>
+        <div style="position: fixed; top: 100px; right: 40px; font-size: 2.5rem; opacity: 0.1; z-index: -1; transform: rotate(10deg);">☕</div>
+        <div style="position: fixed; bottom: 100px; right: 60px; font-size: 2rem; opacity: 0.15; z-index: -1; transform: rotate(20deg);">✈️</div>
+        <div style="position: fixed; top: 50px; left: 50px; font-size: 1.5rem; opacity: 0.2; z-index: -1;">✨</div>
 
         {% if messages %}
             {% for message in messages %}
