@@ -387,7 +387,7 @@
                                 <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; display: flex; gap: 0.5rem; align-items: center;">
                                     {% if task.assigned_by %}
                                     <span><i class="far fa-calendar-alt"></i> {{ task.date|date:"M j" }} - {{ task.end_date|date:"M j, Y" }}</span>
-                                    <span style="background: #e0e7ff; color: #4338ca; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;"><i class="fas fa-chalkboard-teacher"></i> Assigned by {{ task.assigned_by.first_name|default:task.assigned_by.username }}</span>
+                                    <span style="background: #e0e7ff; color: #4338ca; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;"><i class="fas fa-chalkboard-teacher"></i> Assigned by Teacher</span>
                                     {% else %}
                                     <span><i class="far fa-clock"></i> {{ task.start_time|time:"H:i" }} - {{ task.end_time|time:"H:i" }}</span>
                                     {% endif %}

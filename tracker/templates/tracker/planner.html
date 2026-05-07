@@ -149,7 +149,7 @@
                 <span><i class="fas fa-book"></i> {{ task.subject }}</span>
                 <span class="priority-badge priority-{{ task.priority }}">{{ task.priority }}</span>
                 {% if task.assigned_by %}
-                <span style="background: #e0e7ff; color: #4338ca; padding: 0.2rem 0.5rem; border-radius: 6px; font-weight: 600; font-size: 0.75rem;"><i class="fas fa-chalkboard-teacher"></i> Assigned by {{ task.assigned_by.first_name|default:task.assigned_by.username }}</span>
+                <span style="background: #e0e7ff; color: #4338ca; padding: 0.2rem 0.5rem; border-radius: 6px; font-weight: 600; font-size: 0.75rem;"><i class="fas fa-chalkboard-teacher"></i> Assigned by Teacher</span>
                 {% endif %}
             </div>
         </div>
