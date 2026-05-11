@@ -299,18 +299,35 @@ def admin_dashboard(request):
     if profile.role != 'Admin':
         return redirect('home')
         
-    if request.method == 'POST' and 'delete_user' in request.POST:
-        user_id = request.POST.get('user_id')
-        User.objects.filter(id=user_id).delete()
-        return redirect('admin_dashboard')
-        
-    if request.method == 'POST' and 'change_role' in request.POST:
-        user_id = request.POST.get('user_id')
-        new_role = request.POST.get('new_role')
-        target_profile = UserProfile.objects.get(user_id=user_id)
-        target_profile.role = new_role
-        target_profile.save()
-        return redirect('admin_dashboard')
+    if request.method == 'POST':
+        if 'delete_user' in request.POST:
+            user_id = request.POST.get('user_id')
+            User.objects.filter(id=user_id).delete()
+            messages.success(request, "User deleted successfully.")
+            return redirect('admin_dashboard')
+            
+        elif 'change_role' in request.POST:
+            user_id = request.POST.get('user_id')
+            new_role = request.POST.get('new_role')
+            target_profile = UserProfile.objects.get(user_id=user_id)
+            target_profile.role = new_role
+            target_profile.save()
+            messages.success(request, "Role updated successfully.")
+            return redirect('admin_dashboard')
+
+        elif 'add_user' in request.POST:
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            role = request.POST.get('role', 'Student')
+            
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f"Username '{username}' already exists.")
+            else:
+                new_user = User.objects.create_user(username=username, email=email, password=password)
+                UserProfile.objects.get_or_create(user=new_user, defaults={'role': role})
+                messages.success(request, f"User '{username}' created successfully as {role}.")
+            return redirect('admin_dashboard')
         
     profiles = UserProfile.objects.exclude(user=request.user).select_related('user')
     total_tasks = Task.objects.count()
@@ -320,7 +337,7 @@ def admin_dashboard(request):
         'profiles': profiles,
         'total_tasks': total_tasks,
         'completed_tasks': completed_tasks,
-        'total_users': profiles.count() + 1
+        'total_users': User.objects.count()
     })
 
 @login_required
