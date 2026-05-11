@@ -156,51 +156,46 @@
 </div>
 {% endif %}
 
+<div class="add-user-section" style="border: 1px solid #fce8e4; background: #fffafb;">
+    <h2 style="color: var(--text-dark); margin-bottom: 0.5rem;"><i class="fas fa-user-plus" style="margin-right: 0.5rem; color: var(--accent-purple);"></i> Add New User</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">Quickly create a new account for a student, teacher, or admin.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="add_user" value="1">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="e.g. new_student" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email (Optional)</label>
+                <input type="email" id="email" name="email" placeholder="e.g. user@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Required" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Account Role</label>
+                <select id="role" name="role" required>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+        </div>
+        <div style="margin-top: 1.5rem;">
+            <button type="submit" class="btn-primary" style="font-size: 1.2rem; padding: 0.6rem 2rem;">
+                Create User
+            </button>
+        </div>
+    </form>
+</div>
+
 <div class="table-container">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <h2 style="color: var(--text-dark); margin: 0;">User Management</h2>
-        <button onclick="toggleAddUserForm()" class="btn-add" style="margin: 0; padding: 0.6rem 1.2rem; font-size: 0.9rem;">
-            <span style="font-size: 1.2rem; margin-right: 0.5rem;">+</span> Add User
-        </button>
-    </div>
-
-    <!-- Hidden Add User Form -->
-    <div id="addUserForm" class="add-user-section" style="display: none; border: 1px solid #e2e8f0; margin-bottom: 2rem;">
-        <h3 style="margin-bottom: 0.5rem; color: var(--text-dark);">Create New Account</h3>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Enter details for the new user. Password is required.</p>
-        
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="add_user" value="1">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="e.g. student_01" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email (Optional)</label>
-                    <input type="email" id="email" name="email" placeholder="e.g. user@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Required" required>
-                </div>
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <select id="role" name="role" required>
-                        <option value="Student">Student</option>
-                        <option value="Teacher">Teacher</option>
-                        <option value="Admin">Admin</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-footer" style="margin-top: 1rem;">
-                <button type="submit" class="btn-add">Save User</button>
-                <button type="button" onclick="toggleAddUserForm()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; margin-left: 1rem; font-weight: 600;">Cancel</button>
-            </div>
-        </form>
-    </div>
-
+    <h2 style="color: var(--text-dark); margin-bottom: 1.5rem;"><i class="fas fa-users" style="margin-right: 0.5rem; color: var(--accent-purple);"></i> User Management Console</h2>
+    
     <table>
         <thead>
             <tr>
@@ -213,19 +208,19 @@
         <tbody>
             {% for profile in profiles %}
             <tr>
-                <td style="font-weight: 500;">{{ profile.user.username }}</td>
-                <td>{{ profile.user.email }}</td>
+                <td style="font-weight: 600; color: var(--text-dark);">{{ profile.user.username }}</td>
+                <td style="color: var(--text-muted);">{{ profile.user.email|default:"No Email" }}</td>
                 <td>
                     <form method="post" style="display: flex; gap: 0.5rem; align-items: center;">
                         {% csrf_token %}
                         <input type="hidden" name="change_role" value="1">
                         <input type="hidden" name="user_id" value="{{ profile.user.id }}">
-                        <select name="new_role" style="padding: 0.3rem; border-radius: 4px; border: 1px solid #e2e8f0;">
+                        <select name="new_role" style="padding: 0.4rem; border-radius: 8px; border: 1px solid var(--accent-pink); background: white;">
                             <option value="Student" {% if profile.role == 'Student' %}selected{% endif %}>Student</option>
                             <option value="Teacher" {% if profile.role == 'Teacher' %}selected{% endif %}>Teacher</option>
                             <option value="Admin" {% if profile.role == 'Admin' %}selected{% endif %}>Admin</option>
                         </select>
-                        <button type="submit" class="action-btn btn-save">Update</button>
+                        <button type="submit" class="action-btn btn-save" style="padding: 0.4rem 0.8rem;">Update</button>
                     </form>
                 </td>
                 <td>
@@ -233,7 +228,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="delete_user" value="1">
                         <input type="hidden" name="user_id" value="{{ profile.user.id }}">
-                        <button type="submit" class="action-btn btn-delete">Delete</button>
+                        <button type="submit" class="action-btn btn-delete" style="padding: 0.4rem 0.8rem;">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -241,18 +236,4 @@
         </tbody>
     </table>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    function toggleAddUserForm() {
-        const form = document.getElementById('addUserForm');
-        if (form.style.display === 'none') {
-            form.style.display = 'block';
-            form.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            form.style.display = 'none';
-        }
-    }
-</script>
 {% endblock %}
