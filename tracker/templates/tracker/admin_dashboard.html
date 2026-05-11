@@ -99,16 +99,22 @@
     .btn-add {
         background: linear-gradient(135deg, var(--accent-blue), #2563eb);
         color: white;
-        padding: 0.8rem 1.5rem;
+        padding: 0.8rem 2rem;
         border-radius: 12px;
         border: none;
         font-weight: 600;
         cursor: pointer;
-        transition: transform 0.2s ease;
-        margin-top: auto;
+        transition: all 0.3s ease;
+        min-width: 150px;
     }
     .btn-add:hover {
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    .form-footer {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: flex-end;
     }
     .messages {
         margin-bottom: 1.5rem;
@@ -163,8 +169,8 @@
                 <input type="text" id="username" name="username" placeholder="e.g. johndoe" required>
             </div>
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="e.g. john@example.com" required>
+                <label for="email">Email Address (Optional)</label>
+                <input type="email" id="email" name="email" placeholder="e.g. john@example.com">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -178,7 +184,9 @@
                     <option value="Admin">Admin</option>
                 </select>
             </div>
-            <button type="submit" class="btn-add">Add User</button>
+        </div>
+        <div class="form-footer">
+            <button type="submit" class="btn-add">Add New User</button>
         </div>
     </form>
 </div>
